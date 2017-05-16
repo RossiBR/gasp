@@ -1,0 +1,14 @@
+.label-highlight {
+  background-color: #862d59;
+}
+
+.label-highlight[href]:hover,
+.label-highlight[href]:focus {
+  background-color: #73264d;
+}
+
+.label {
+	margin-left: .2em;
+	margin-right:  .2em;
+	padding: .4em .6em .3em;
+}
