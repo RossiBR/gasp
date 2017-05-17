@@ -2170,10 +2170,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return { items: [], search: '', lastResponse: {}, selected: {}, ims: {}, debug: '', showDetail: false, edit: false, detailPanel: 1, onlyIM: 0, ramo: null, linha: null, contrato: null, file: '', isUploading: false, field: 'nome' };
+        return { items: [], search: '', lastResponse: {}, selected: {}, ims: {}, debug: '', showDetail: false, edit: false, detailPanel: 1, onlyIM: 0, ramo: null, linha: null, contrato: null, file: '', isUploading: false, field: 'nome', uploadStatus: '' };
     },
     created: function created() {
         this.fetch();
@@ -2184,48 +2186,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.linha = linha;
             this.ramo = ramo;
             this.contrato = contrato;
-            this.fetch();
-        },
-        findIMs: function findIMs() {
-            this.contrato = null;
-            this.onlyIM = 1;
-            this.ramo = null;
-            this.linha = null;
-            this.fetch();
-        },
-        findIMLobinho: function findIMLobinho() {
-            this.contrato = null;
-            this.onlyIM = 0;
-            this.ramo = 1;
-            this.linha = null;
-            this.fetch();
-        },
-        findIMEscoteiro: function findIMEscoteiro() {
-            this.contrato = null;
-            this.onlyIM = 0;
-            this.ramo = 2;
-            this.linha = null;
-            this.fetch();
-        },
-        findIMSenior: function findIMSenior() {
-            this.contrato = null;
-            this.onlyIM = 0;
-            this.ramo = 3;
-            this.linha = null;
-            this.fetch();
-        },
-        findIMPioneiro: function findIMPioneiro() {
-            this.contrato = null;
-            this.onlyIM = 0;
-            this.ramo = 4;
-            this.linha = null;
-            this.fetch();
-        },
-        findIMDirigente: function findIMDirigente() {
-            this.contrato = null;
-            this.onlyIM = 0;
-            this.ramo = null;
-            this.linha = 1;
             this.fetch();
         },
         findIMContratoValido: function findIMContratoValido() {
@@ -2341,10 +2301,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var files = e.target.files;
             this.file = files[0];
         },
-        sendFile: function sendFile(e) {
+        sendFile: function sendFile(target) {
+            var _this7 = this;
+
             var data = new FormData();
             data.append('file', this.file);
-            this.$http.post('test', data);
+            this.$http.post(target, data).then(function (response) {
+                _this7.uploadStatus = response.body;
+            });
         },
         contractClass: function contractClass(data_fim) {
             var now = new Date();
@@ -32302,7 +32266,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\new_gasp\\resources\\assets\\js\\components\\Associados.vue"
+Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\github\\gasp\\resources\\assets\\js\\components\\Associados.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Associados.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -32313,9 +32277,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cb4c00f6", Component.options)
+    hotAPI.createRecord("data-v-86d824f4", Component.options)
   } else {
-    hotAPI.reload("data-v-cb4c00f6", Component.options)
+    hotAPI.reload("data-v-86d824f4", Component.options)
   }
 })()}
 
@@ -32330,13 +32294,13 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(31),
   /* template */
-  __webpack_require__(43),
+  __webpack_require__(42),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\new_gasp\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\github\\gasp\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -32347,9 +32311,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4dd7f410", Component.options)
+    hotAPI.createRecord("data-v-12c0a4a2", Component.options)
   } else {
-    hotAPI.reload("data-v-4dd7f410", Component.options)
+    hotAPI.reload("data-v-12c0a4a2", Component.options)
   }
 })()}
 
@@ -32364,13 +32328,13 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(32),
   /* template */
-  __webpack_require__(44),
+  __webpack_require__(43),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\new_gasp\\resources\\assets\\js\\components\\LinhasFormacao.vue"
+Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\github\\gasp\\resources\\assets\\js\\components\\LinhasFormacao.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] LinhasFormacao.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -32381,9 +32345,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6f616367", Component.options)
+    hotAPI.createRecord("data-v-31fb2e30", Component.options)
   } else {
-    hotAPI.reload("data-v-6f616367", Component.options)
+    hotAPI.reload("data-v-31fb2e30", Component.options)
   }
 })()}
 
@@ -32398,13 +32362,13 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(33),
   /* template */
-  __webpack_require__(42),
+  __webpack_require__(44),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\new_gasp\\resources\\assets\\js\\components\\Ramos.vue"
+Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\github\\gasp\\resources\\assets\\js\\components\\Ramos.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Ramos.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -32415,9 +32379,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1614b8a8", Component.options)
+    hotAPI.createRecord("data-v-766c4e07", Component.options)
   } else {
-    hotAPI.reload("data-v-1614b8a8", Component.options)
+    hotAPI.reload("data-v-766c4e07", Component.options)
   }
 })()}
 
@@ -32426,42 +32390,6 @@ module.exports = Component.exports
 
 /***/ }),
 /* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-8 col-md-offset-2"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Ramos")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "list-group"
-  }, _vm._l((_vm.lastResponse.data), function(item) {
-    return _c('button', {
-      staticClass: "list-group-item",
-      attrs: {
-        "type": "button"
-      }
-    }, [_vm._v("\n                                " + _vm._s(item.nome) + " (" + _vm._s(item.sigla) + ")\n                            ")])
-  }))])])])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1614b8a8", module.exports)
-  }
-}
-
-/***/ }),
-/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -32485,12 +32413,12 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4dd7f410", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-12c0a4a2", module.exports)
   }
 }
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -32521,7 +32449,43 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6f616367", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-31fb2e30", module.exports)
+  }
+}
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-md-offset-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("Ramos")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.lastResponse.data), function(item) {
+    return _c('button', {
+      staticClass: "list-group-item",
+      attrs: {
+        "type": "button"
+      }
+    }, [_vm._v("\n                                " + _vm._s(item.nome) + " (" + _vm._s(item.sigla) + ")\n                            ")])
+  }))])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-766c4e07", module.exports)
   }
 }
 
@@ -32845,19 +32809,49 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.upload
     }
-  }), _vm._v(" "), _c('a', {
+  }), _c('br'), _vm._v(" "), _c('a', {
     attrs: {
       "href": "#"
     },
     on: {
-      "click": _vm.sendFile
+      "click": function($event) {
+        _vm.sendFile('uploadassociados')
+      }
     }
   }, [_c('span', {
-    staticClass: "glyphicon glyphicon-save",
+    staticClass: "glyphicon glyphicon-upload",
     attrs: {
       "aria-hidden": "true"
     }
-  }), _vm._v(" Upload")])])])])])]) : _vm._e(), _vm._v(" "), (_vm.showDetail) ? _c('div', {
+  }), _vm._v(" Associados")]), _c('br'), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.sendFile('uploadims')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-upload",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IMS")]), _c('br'), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.sendFile('uploadformadores')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-upload",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Formadores")]), _c('br')]), _vm._v(" "), _c('div', [_vm._v(_vm._s(_vm.uploadStatus))])])])])]) : _vm._e(), _vm._v(" "), (_vm.showDetail) ? _c('div', {
     staticClass: "row",
     attrs: {
       "id": "detail"
@@ -33384,7 +33378,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-cb4c00f6", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-86d824f4", module.exports)
   }
 }
 

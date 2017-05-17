@@ -90,10 +90,12 @@
     
                        
                             <div>
-                                <input type="file" @change="upload" />
-                                <a href="#" v-on:click="sendFile" ><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Upload</a>                                
+                                <input type="file" @change="upload" /><br/>
+                                <a href="#" v-on:click="sendFile('uploadassociados')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Associados</a><br/>
+                                <a href="#" v-on:click="sendFile('uploadims')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> IMS</a><br/>
+                                <a href="#" v-on:click="sendFile('uploadformadores')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Formadores</a><br/>                            
                             </div>
-    
+                            <div>{{ uploadStatus }}</div>
                 </div></div>
             </div>
         </div> <!-- row -->
@@ -267,7 +269,7 @@
 <script>
     export default {
         data: function () {
-            return { items: [], search: '', lastResponse: {}, selected: {} , ims:{}, debug: '', showDetail: false, edit:false, detailPanel:1, onlyIM:0, ramo: null, linha: null, contrato: null, file: '', isUploading: false, field:'nome', };
+            return { items: [], search: '', lastResponse: {}, selected: {} , ims:{}, debug: '', showDetail: false, edit:false, detailPanel:1, onlyIM:0, ramo: null, linha: null, contrato: null, file: '', isUploading: false, field:'nome', uploadStatus:'' };
         },
         created: function () {
            this.fetch();
@@ -278,48 +280,6 @@
                 this.linha=linha;
                 this.ramo=ramo;
                 this.contrato=contrato;
-                this.fetch(); 
-            },
-            findIMs: function () {
-                this.contrato=null;
-                this.onlyIM=1;
-                this.ramo=null;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMLobinho: function () {
-                this.contrato=null;
-                this.onlyIM=0;
-                this.ramo=1;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMEscoteiro: function () {
-                this.contrato=null;
-                this.onlyIM=0;
-                this.ramo=2;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMSenior: function () {
-                this.contrato=null;
-                this.onlyIM=0;
-                this.ramo=3;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMPioneiro: function () {
-                this.contrato=null;
-                this.onlyIM=0;
-                this.ramo=4;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMDirigente: function () {
-                this.contrato=null;
-                this.onlyIM=0;
-                this.ramo=null;
-                this.linha=1;
                 this.fetch(); 
             },
             findIMContratoValido: function () {
@@ -423,10 +383,12 @@
                 var files = e.target.files;
                 this.file = files[0];
             },
-            sendFile: function (e) { 
+            sendFile: function (target) { 
                 let data = new FormData();
                 data.append('file', this.file);
-                this.$http.post('test', data);
+                this.$http.post(target, data).then(response => {
+                    this.uploadStatus = response.body;
+                });
             },
             contractClass: function(data_fim) {
                 var now = new Date();
