@@ -1038,6 +1038,7 @@ window.Vue.http.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 
 Vue.component('example', __webpack_require__(39));
 Vue.component('associados', __webpack_require__(38));
+Vue.component('cursos', __webpack_require__(60));
 Vue.component('ramos', __webpack_require__(41));
 Vue.component('linhasformacao', __webpack_require__(40));
 
@@ -2213,7 +2214,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             console.log(im_id);
-            var resource = this.$resource('insigniamadeira{/id}');
+            var resource = this.$resource('api/insigniamadeira{/id}');
             resource.remove({ id: im_id }, { id: im_id }).then(function (response) {
                 console.log(_this);
                 console.log(response);
@@ -2226,7 +2227,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         im: function im(linha_id, ramo_id) {
             var _this2 = this;
 
-            var resource = this.$resource('insigniamadeira{/id}');
+            var resource = this.$resource('api/insigniamadeira{/id}');
             resource.save({ id: null }, { associado_id: this.selected.id, linha_formacao_id: linha_id, ramo_id: ramo_id }).then(function (response) {
                 console.log(_this2);
                 console.log(response);
@@ -2243,7 +2244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             console.log(this.search);
 
-            var resource = this.$resource('associados{/id}');
+            var resource = this.$resource('api/associados{/id}');
             resource.get({ id: id }).then(function (response) {
                 console.log(_this3);
                 console.log(response.body);
@@ -2265,7 +2266,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.field = field;
             }
             console.log(this.search);
-            var resource = this.$resource('associados{/id}');
+            var resource = this.$resource('api/associados{/id}');
             resource.get({ field: this.field, search: this.search, im: this.onlyIM, ramo: this.ramo, linha: this.linha, contrato: this.contrato }).then(function (response) {
                 console.log(_this4);
                 console.log(response);
@@ -44305,6 +44306,1231 @@ module.exports = function(module) {
 __webpack_require__(10);
 module.exports = __webpack_require__(11);
 
+
+/***/ }),
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return { items: [], search: '', lastResponse: {}, selected: {}, ims: {}, debug: '', showDetail: false, edit: false, detailPanel: 1, onlyIM: 0, ramo: null, linha: null, contrato: null, file: '', isUploading: false, field: 'nome', uploadStatus: '' };
+    },
+    created: function created() {
+        this.fetch();
+    },
+    methods: {
+        find: function find(im, linha, ramo, contrato) {
+            this.onlyIM = im;
+            this.linha = linha;
+            this.ramo = ramo;
+            this.contrato = contrato;
+            this.fetch();
+        },
+        findIMContratoValido: function findIMContratoValido() {
+            this.contrato = 1;
+            this.onlyIM = 0;
+            this.ramo = null;
+            this.linha = null;
+            this.fetch();
+        },
+        findIMContratoExpirado: function findIMContratoExpirado() {
+            this.contrato = 2;
+            this.onlyIM = 0;
+            this.ramo = null;
+            this.linha = null;
+            this.fetch();
+        },
+        findIMSemContrato: function findIMSemContrato() {
+            this.contrato = 3;
+            this.onlyIM = 0;
+            this.ramo = null;
+            this.linha = null;
+            this.fetch();
+        },
+        deleteim: function deleteim(im_id) {
+            var _this = this;
+
+            console.log(im_id);
+            var resource = this.$resource('insigniamadeira{/id}');
+            resource.remove({ id: im_id }, { id: im_id }).then(function (response) {
+                console.log(_this);
+                console.log(response);
+                _this.detail(_this.selected.id);
+            });
+        },
+        showDetailPanel: function showDetailPanel(index) {
+            this.detailPanel = index;
+        },
+        im: function im(linha_id, ramo_id) {
+            var _this2 = this;
+
+            var resource = this.$resource('insigniamadeira{/id}');
+            resource.save({ id: null }, { associado_id: this.selected.id, linha_formacao_id: linha_id, ramo_id: ramo_id }).then(function (response) {
+                console.log(_this2);
+                console.log(response);
+                _this2.detail(_this2.selected.id);
+            }, function (response) {
+                console.log(_this2);
+                console.log(response);
+                _this2.debug = response.body;
+                _this2.detail(_this2.selected.id);
+            });
+        },
+        detail: function detail(id) {
+            var _this3 = this;
+
+            console.log(this.search);
+
+            var resource = this.$resource('api/cursos{/id}');
+            resource.get({ id: id }).then(function (response) {
+                console.log(_this3);
+                console.log(response.body);
+                _this3.selected = {};
+                _this3.selected = response.body;
+                console.log('selected:');
+                console.log(_this3.selected);
+            });
+            this.showDetail = true;
+        },
+        master: function master() {
+            this.fetch();
+            this.showDetail = false;
+        },
+        fetch: function fetch(field) {
+            var _this4 = this;
+
+            if (field) {
+                this.field = field;
+            }
+            console.log(this.search);
+            var resource = this.$resource('api/cursos{/id}');
+            resource.get({ field: this.field, search: this.search, im: this.onlyIM, ramo: this.ramo, linha: this.linha, contrato: this.contrato }).then(function (response) {
+                console.log(_this4);
+                console.log(response);
+                _this4.lastResponse = response.body;
+            });
+        },
+        next: function next() {
+            var _this5 = this;
+
+            if (this.lastResponse.next_page_url) {
+                var url = this.lastResponse.next_page_url + "&search=" + this.search + "&field=" + this.field;
+                Vue.http.get(url).then(function (response) {
+                    console.log(_this5);
+                    console.log(response);
+                    _this5.lastResponse = response.body;
+                });
+            }
+        },
+        prev: function prev() {
+            var _this6 = this;
+
+            if (this.lastResponse.prev_page_url) {
+                var url = this.lastResponse.prev_page_url + "&search=" + this.search + "&field=" + this.field;
+                Vue.http.get(this.lastResponse.prev_page_url).then(function (response) {
+                    console.log(_this6);
+                    console.log(response);
+                    _this6.lastResponse = response.body;
+                });
+            }
+        },
+        upload: function upload(e) {
+            e.preventDefault();
+            var files = e.target.files;
+            this.file = files[0];
+        },
+        sendFile: function sendFile(target) {
+            var _this7 = this;
+
+            var data = new FormData();
+            data.append('file', this.file);
+            this.$http.post(target, data).then(function (response) {
+                _this7.uploadStatus = response.body;
+            });
+        },
+        contractClass: function contractClass(data_fim) {
+            var now = new Date();
+            var difDays = Math.ceil(Math.abs(now.getTime() - new Date(data_fim).getTime()) / (1000 * 3600 * 24));
+            console.log(difDays);
+            if (now > new Date(data_fim)) {
+                return -1;
+            }
+
+            if (difDays <= 30) {
+                return 0;
+            }
+            return 1;
+        }
+
+    },
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(59),
+  /* template */
+  __webpack_require__(61),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\dev\\projects\\gasp_laravel\\github\\gasp\\resources\\assets\\js\\components\\Cursos.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Cursos.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-73ff8a22", Component.options)
+  } else {
+    hotAPI.reload("data-v-73ff8a22", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container-fluid"
+  }, [(!_vm.showDetail) ? _c('div', {
+    staticClass: "row",
+    attrs: {
+      "id": "master"
+    }
+  }, [_c('div', {
+    staticClass: "col-md-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "nav nav-pills nav-stacked"
+  }, [_c('li', {
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.find(null, null, null, null)
+      }
+    }
+  }, [_vm._v("Todos")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-8"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.search),
+      expression: "search"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "input-search",
+      "placeholder": "Buscar..."
+    },
+    domProps: {
+      "value": (_vm.search)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.fetch()
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.search = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "input-group-btn"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.fetch('nome')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-search",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Nome")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.fetch('tipo')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-search",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Tipo")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.fetch('linha')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-search",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Linha")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.fetch('ramo')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-search",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Ramo")])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.lastResponse.data), function(item) {
+    return _c('button', {
+      staticClass: "list-group-item",
+      attrs: {
+        "type": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.detail(item.id)
+        }
+      }
+    }, [_c('strong', [_vm._v(_vm._s(item.grade.nome))])])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "btn-group btn-group-justified",
+    attrs: {
+      "role": "group",
+      "aria-label": "..."
+    }
+  }, [_c('div', {
+    staticClass: "btn-group",
+    attrs: {
+      "role": "group"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.prev()
+      }
+    }
+  }, [_vm._v("Anterior")])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group",
+    attrs: {
+      "role": "group"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v(_vm._s(_vm.lastResponse.from) + " até " + _vm._s(_vm.lastResponse.to) + " de " + _vm._s(_vm.lastResponse.total))])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group",
+    attrs: {
+      "role": "group"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.next()
+      }
+    }
+  }, [_vm._v("Proximo")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.sendFile('uploadassociados')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Novo")]), _c('br'), _c('br'), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "file"
+    },
+    on: {
+      "change": _vm.upload
+    }
+  }), _c('br'), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.sendFile('uploadassociados')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-upload",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Associados")]), _c('br'), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.sendFile('uploadims')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-upload",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IMS")]), _c('br'), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.sendFile('uploadformadores')
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-upload",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Formadores")]), _c('br')]), _vm._v(" "), _c('div', [_vm._v(_vm._s(_vm.uploadStatus))])])])])]) : _vm._e(), _vm._v(" "), (_vm.showDetail) ? _c('div', {
+    staticClass: "row",
+    attrs: {
+      "id": "detail"
+    }
+  }, [_c('div', {
+    staticClass: "col-md-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "nav nav-pills nav-stacked"
+  }, [_c('li', {
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDetailPanel(1)
+      }
+    }
+  }, [_vm._v("Perfil")])]), _vm._v(" "), _c('li', {
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDetailPanel(2)
+      }
+    }
+  }, [_vm._v("Dados do Curso")])]), _vm._v(" "), _c('li', {
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDetailPanel(3)
+      }
+    }
+  }, [_vm._v("Local")])]), _vm._v(" "), _c('li', {
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDetailPanel(4)
+      }
+    }
+  }, [_vm._v("Equipe")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-8"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [(_vm.detailPanel == 1) ? _c('div', {
+    staticClass: "panel-body",
+    attrs: {
+      "id": "perfil"
+    }
+  }, [_c('ol', {
+    staticClass: "breadcrumb"
+  }, [_vm._m(1), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.master()
+      }
+    }
+  }, [_vm._v("Cursos")])]), _vm._v(" "), _c('li', {
+    staticClass: "active"
+  }, [_vm._v(_vm._s(_vm.selected.grade.nome))])]), _vm._v(" "), _c('h3', [_vm._v("Dados do Curso")]), _vm._v(" "), _c('p', [_vm._v("Numero: "), _c('strong', [_vm._v(_vm._s(_vm.selected.registro))])]), _vm._v(" "), _c('h3', [_vm._v("Dados da Grade")]), _vm._v(" "), _c('p', [_vm._v("Nome: "), _c('strong', [_vm._v(_vm._s(_vm.selected.grade.nome))])]), _vm._v(" "), _c('p', [_vm._v("Tipo de Curso: "), _c('strong', [_vm._v(_vm._s(_vm.selected.grade.tipo_curso ? _vm.selected.grade.tipo_curso.nome : 'N/A'))])]), _vm._v(" "), _c('p', [_vm._v("Linha de Formação: "), _c('strong', [_vm._v(_vm._s(_vm.selected.grade.linha_formacao ? _vm.selected.grade.linha_formacao.nome : 'N/A'))])]), _vm._v(" "), _c('p', [_vm._v("Ramo: "), _c('strong', [_vm._v(_vm._s(_vm.selected.grade.ramo != null ? _vm.selected.grade.ramo.nome : 'N/A'))])])]) : _vm._e(), _vm._v(" "), (_vm.detailPanel == 2) ? _c('div', {
+    staticClass: "panel-body",
+    attrs: {
+      "id": "pessoais"
+    }
+  }, [_c('ol', {
+    staticClass: "breadcrumb"
+  }, [_vm._m(2), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.master()
+      }
+    }
+  }, [_vm._v("Associados")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.detailPanel(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.selected.grade.nome))])]), _vm._v(" "), _c('li', {
+    staticClass: "active"
+  }, [_vm._v("Dados Pessoais")])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "input-registro"
+    }
+  }, [_vm._v("Registro")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selected.registro),
+      expression: "selected.registro"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "input-registro",
+      "placeholder": "Registro",
+      "aria-describedby": "sizing-addon2"
+    },
+    domProps: {
+      "value": (_vm.selected.registro)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selected.registro = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-4"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "input-registro-digito"
+    }
+  }, [_vm._v("Digito")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selected.registro_digito),
+      expression: "selected.registro_digito"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "input-registro-digito",
+      "placeholder": "Digito",
+      "aria-describedby": "sizing-addon2"
+    },
+    domProps: {
+      "value": (_vm.selected.registro_digito)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selected.registro_digito = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "input-nome"
+    }
+  }, [_vm._v("Nome")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selected.grade.nome),
+      expression: "selected.grade.nome"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "input-nome",
+      "placeholder": "Nome",
+      "aria-describedby": "sizing-addon2"
+    },
+    domProps: {
+      "value": (_vm.selected.grade.nome)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selected.grade.nome = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "input-email"
+    }
+  }, [_vm._v("Email")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selected.email),
+      expression: "selected.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "input-email",
+      "placeholder": "Email",
+      "aria-describedby": "sizing-addon2"
+    },
+    domProps: {
+      "value": (_vm.selected.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selected.email = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "input-created"
+    }
+  }, [_vm._v("Data de Criação")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selected.created_at),
+      expression: "selected.created_at"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "datetime",
+      "id": "input-created",
+      "placeholder": "Email",
+      "aria-describedby": "sizing-addon2"
+    },
+    domProps: {
+      "value": (_vm.selected.created_at)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selected.created_at = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "input-created"
+    }
+  }, [_vm._v("Data de Criação")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selected.created_at),
+      expression: "selected.created_at"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "datetime",
+      "id": "input-created",
+      "placeholder": "Email",
+      "aria-describedby": "sizing-addon2"
+    },
+    domProps: {
+      "value": (_vm.selected.created_at)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selected.created_at = $event.target.value
+      }
+    }
+  })])])])]) : _vm._e(), _vm._v(" "), (_vm.detailPanel == 3) ? _c('div', {
+    staticClass: "panel-body",
+    attrs: {
+      "id": "pessoais"
+    }
+  }, [_c('ol', {
+    staticClass: "breadcrumb"
+  }, [_vm._m(3), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.master()
+      }
+    }
+  }, [_vm._v("Cursos")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.detailPanel(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.selected.grade.nome))])]), _vm._v(" "), _c('li', {
+    staticClass: "active"
+  }, [_vm._v("Insígnias da Madeira")])])]) : _vm._e(), _vm._v(" "), (_vm.detailPanel == 4) ? _c('div', {
+    staticClass: "panel-body",
+    attrs: {
+      "id": "pessoais"
+    }
+  }, [_c('ol', {
+    staticClass: "breadcrumb"
+  }, [_vm._m(4), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.master()
+      }
+    }
+  }, [_vm._v("Associados")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.detailPanel(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.selected.grade.nome))])]), _vm._v(" "), _c('li', {
+    staticClass: "active"
+  }, [_vm._v("Contratos")])])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.master()
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-list-alt",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Voltar")])]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.im(1, null)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IM Dirigente")])]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.im(2, 1)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IM Ramo Lobinho")])]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.im(2, 2)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IM Ramo Escoteiro")])]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.im(2, 3)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IM Ramo Sênior")])]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        _vm.im(2, 4)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" IM Ramo Pioneiro")])])])])])]) : _vm._e()])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('ol', {
+    staticClass: "breadcrumb"
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "/home"
+    }
+  }, [_vm._v("Home")])]), _vm._v(" "), _c('li', {
+    staticClass: "active"
+  }, [_vm._v("Cursos")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {
+    attrs: {
+      "href": "/home"
+    }
+  }, [_vm._v("Home")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {
+    attrs: {
+      "href": "/home"
+    }
+  }, [_vm._v("Home")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {
+    attrs: {
+      "href": "/home"
+    }
+  }, [_vm._v("Home")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', [_c('a', {
+    attrs: {
+      "href": "/home"
+    }
+  }, [_vm._v("Home")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-save",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Salvar")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-edit",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Editar")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-73ff8a22", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

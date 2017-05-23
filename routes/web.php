@@ -25,7 +25,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/asso', 'AssociadoController@index')->name('asso');		
+Route::get('/voluntarios', 'AssociadoController@index')->name('voluntarios');
+Route::get('/cursos', 'CursoController@index')->name('cursos');	
 
 function convert_utf8( $string ) { 
     //if ( strlen(utf8_decode($string)) == strlen($string) ) {   
@@ -326,14 +327,16 @@ Route::post('/uploadformadores', function (Request $request) {
 
 
 Route::group([	
-	'middleware' => 'auth'
+	'middleware' => 'auth',
+	'prefix' => 'api',
 	], function () {
-		Route::resource('contratos', 'ContratoVoluntarioController');		
+		Route::resource('contratos', 'ContratoVoluntarioController');
 		Route::resource('associados', 'AssociadoApiController');
 		Route::resource('ramos', 'RamoController');
 		Route::resource('linhasformacao', 'LinhaFormacaoController');
 		Route::resource('insigniamadeira', 'InsigniaMadeiraController');
 		Route::resource('uel', 'UELController');
+		Route::resource('cursos', 'CursoApiController');
 	}
 );
 

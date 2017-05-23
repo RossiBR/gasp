@@ -6,6 +6,9 @@ use App\LinhaFormacao;
 use App\User;
 use App\Associado;
 use App\UEL;
+use App\Grade;
+use App\TipoCurso;
+use App\Curso;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,9 +28,18 @@ class DatabaseSeeder extends Seeder
         $this->call('LinhaFormacaoTableSeeder');
         $this->command->info('LinhaFormacao table seeded!');
 
-        //DB::table('associado')->delete();
-        //factory(Associado::class, 100)->create();
-        //$this->command->info('Associado table seeded!');
+        $this->call('TipoCursoTableSeeder');
+        $this->command->info('TipoCurso table seeded!');
+
+        $this->call('GradeTableSeeder');
+        $this->command->info('Grade table seeded!');
+
+        $this->call('CursoTableSeeder');
+        $this->command->info('Curso table seeded!');
+
+        DB::table('associado')->delete();
+        factory(Associado::class, 100)->create();
+        $this->command->info('Associado table seeded!');
 
         DB::table('uel')->delete();
         factory(UEL::class, 100)->create();
@@ -74,6 +86,57 @@ class LinhaFormacaoTableSeeder extends Seeder {
 
         LinhaFormacao::create(['nome' => 'Dirigente', 'sigla' => 'D']);
         LinhaFormacao::create(['nome' => 'Escotista', 'sigla' => 'E']);
+    }
+
+}
+
+class TipoCursoTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('tipo_curso')->delete();
+
+        TipoCurso::create(['nome' => 'Preliminar', 'sigla' => 'CP']);
+        TipoCurso::create(['nome' => 'Módulo de Aperfeiçoamento', 'sigla' => 'MA']);
+        TipoCurso::create(['nome' => 'Curso Técnico', 'sigla' => 'CT']);
+        TipoCurso::create(['nome' => 'Curso Técnico de Ramo', 'sigla' => 'CTR']);
+        TipoCurso::create(['nome' => 'Curso Básico', 'sigla' => 'CB']);
+        TipoCurso::create(['nome' => 'Curso Avançado', 'sigla' => 'CA']);
+    }
+
+}
+
+class GradeTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('grade')->delete();
+
+        Grade::create([
+            'nome' => 'Preliminar Escotista',
+            'sigla' => 'CPE',
+            'versao' => 1,
+            'tipo_curso_id' => 1,
+            'linha_formacao_id' => 2,
+            'ramo_id' => null,
+        ]);
+       
+    }
+
+}
+
+
+class CursoTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('curso')->delete();
+
+        Curso::create([
+            'grade_id' => 1,
+            'criador_id' => 1,
+        ]);
+       
     }
 
 }

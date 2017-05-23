@@ -8,15 +8,6 @@
     
                         <ul class="nav nav-pills nav-stacked">
                             <li role="presentation" ><a href="#" v-on:click="find(null, null, null, null)">Todos</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="find(1, null, null, null)">IMs</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="find(null, null, 1, null)">IM Lobinho</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="find(null, null, 2, null)">IM Escoteiro</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="find(null, null, 3, null)">IM Sênior</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="find(null, null, 4, null)">IM Pioneiro</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="find(null, 1, null, null)">IM Dirigente</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="findIMContratoValido()">Contrato Válido</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="findIMContratoExpirado()">Contrato Expirado</a></li>
-                            <li role="presentation" ><a href="#" v-on:click="findIMSemContrato()">Sem Contrato</a></li>
                         </ul>
                 </div></div>
             </div>
@@ -27,18 +18,20 @@
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li class="active">Associados</li>
+                            <li class="active">Cursos</li>
                         </ol>
 
 
                         <div class="input-group">
                             <input type="text" id="input-search" class="form-control" placeholder="Buscar..." v-model="search" v-on:keyup.enter="fetch()">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" v-on:click="fetch('registro')" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Registro</button>
-                            
                                 <button class="btn btn-default" type="button" v-on:click="fetch('nome')" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Nome</button>
+
+                                <button class="btn btn-default" type="button" v-on:click="fetch('tipo')" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tipo</button>
+                            
+                                <button class="btn btn-default" type="button" v-on:click="fetch('linha')" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Linha</button>
                          
-                                <button class="btn btn-default" type="button" v-on:click="fetch('uel')" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> UEL</button>
+                                <button class="btn btn-default" type="button" v-on:click="fetch('ramo')" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Ramo</button>
                             </span>
                         </div><!-- /input-group -->
                       
@@ -47,24 +40,7 @@
                         <div class="list-group">
                             <button type="button" class="list-group-item" v-for="item in lastResponse.data" v-on:click="detail(item.id)">
                                 
-                                <strong>{{ item.nome }}</strong>
-                                
-                                <span class="label label-default pull-right" v-if="item.contratos.length < 1">
-                                    Não Possui Contrato
-                                </span>
-                             
-                                <span class="label pull-right" v-bind:class="{'label-info': contractClass(contrato.data_fim) == 1,  'label-warning': contractClass(contrato.data_fim) == 0, 'label-danger': contractClass(contrato.data_fim) == -1}" v-for="contrato in item.contratos">
-                                    Contrato válido até {{ contrato.data_fim }}
-                                </span>
-
-                                <br/>
-                                {{ item.registro }}-{{ item.registro_digito }} G.E. {{ item.uel }} 
-
-                                   
-                                <span class="label pull-right" v-bind:class="{'label-warning': (im.ramo_id == 1), 'label-success': (im.ramo_id == 2), 'label-highlight': (im.ramo_id == 3), 'label-danger': (im.ramo_id == 4), 'label-primary': (im.ramo_id == null)}"  v-for="im in item.ims">
-                                    IM {{ im.linha_formacao.sigla == 'D' ? im.linha_formacao.nome : '' }}
-                                    {{ im.ramo ? im.ramo.nome : '' }}
-                                </span>
+                                <strong>{{ item.grade.nome }}</strong>
                                 
                             </button>
                         </div> <!-- list -->
@@ -87,9 +63,9 @@
                   <div class="panel panel-default">
  
                     <div class="panel-body">
-    
-                       
+                          
                             <div>
+                                <a href="#" v-on:click="sendFile('uploadassociados')" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo</a><br/><br/>
                                 <input type="file" @change="upload" /><br/>
                                 <a href="#" v-on:click="sendFile('uploadassociados')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Associados</a><br/>
                                 <a href="#" v-on:click="sendFile('uploadims')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> IMS</a><br/>
@@ -106,9 +82,9 @@
                     <div class="panel-body">
                          <ul class="nav nav-pills nav-stacked">
                             <li role="presentation"><a href="#" v-on:click="showDetailPanel(1)">Perfil</a></li>
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(2)">Dados Pessoais</a></li>
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(3)">IMs</a></li>
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(4)">Contrato</a></li>
+                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(2)">Dados do Curso</a></li>
+                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(3)">Local</a></li>
+                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(4)">Equipe</a></li>
                         </ul>
                     </div>
                 </div>         
@@ -121,19 +97,19 @@
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="#" v-on:click="master()">Associados</a></li>
-                            <li class="active">{{selected.nome}}</li>
+                            <li><a href="#" v-on:click="master()">Cursos</a></li>
+                            <li class="active">{{selected.grade.nome}}</li>
                         </ol>
                         
-                        <h3>Dados Pessoais</h3>
-                        <p>Registro: <strong>{{ selected.registro }} - {{ selected.registro_digito }}</strong></p>
-                        <p>Nome: <strong>{{ selected.nome }}</strong></p>
-                        <p>Email: <strong>{{ selected.email }}</strong></p>
+                        <h3>Dados do Curso</h3>
+                        <p>Numero: <strong>{{ selected.registro }}</strong></p>
 
+                        <h3>Dados da Grade</h3>
+                        <p>Nome: <strong>{{ selected.grade.nome }}</strong></p>
+                        <p>Tipo de Curso: <strong>{{ selected.grade.tipo_curso ? selected.grade.tipo_curso.nome : 'N/A'}}</strong></p>
+                        <p>Linha de Formação: <strong>{{ selected.grade.linha_formacao ? selected.grade.linha_formacao.nome : 'N/A' }}</strong></p>
+                        <p>Ramo: <strong>{{ selected.grade.ramo != null ? selected.grade.ramo.nome : 'N/A' }}</strong></p>
 
-                        <h3>Insígnias da Madeira</h3>
-                        <p  v-for="im in selected.ims" ><strong>IM {{ im.linha_formacao.sigla == 'D' ? im.linha_formacao.nome : '' }}
-                                    {{ im.ramo ? im.ramo.nome : '' }}</strong></p>                       
                     </div>
 
                     <div class="panel-body" id="pessoais" v-if="detailPanel == 2" >
@@ -141,7 +117,7 @@
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
                             <li><a href="#" v-on:click="master()">Associados</a></li>
-                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.nome}}</a></li>
+                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
                             <li class="active">Dados Pessoais</li>
                         </ol>
                         
@@ -167,7 +143,7 @@
                                 <div class="form-group">
                                     <label for="input-nome">Nome</label>
                                     <input type="text" class="form-control" id="input-nome" placeholder="Nome" aria-describedby="sizing-addon2" 
-                                        v-model="selected.nome" >
+                                        v-model="selected.grade.nome" >
                                 </div>
                             </div>
                         </div>
@@ -204,14 +180,13 @@
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="#" v-on:click="master()">Associados</a></li>
-                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.nome}}</a></li>
+                            <li><a href="#" v-on:click="master()">Cursos</a></li>
+                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
                             <li class="active">Insígnias da Madeira</li>
 
                         </ol>
                         
-                        <p  v-for="im in selected.ims" ><strong>IM {{ im.linha_formacao.sigla == 'D' ? im.linha_formacao.nome : '' }}
-                                    {{ im.ramo ? im.ramo.nome : '' }}</strong> {{ im.ano ? im.ano : '' }} <a href="#" v-on:click="deleteim(im.id)">X</a></p>
+                       
                         
                     </div>
 
@@ -220,7 +195,7 @@
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
                             <li><a href="#" v-on:click="master()">Associados</a></li>
-                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.nome}}</a></li>
+                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
                             <li class="active">Contratos</li>
                         </ol>
                    
@@ -305,7 +280,7 @@
             },
             deleteim: function (im_id) {
                 console.log(im_id);
-                var resource = this.$resource('api/insigniamadeira{/id}');
+                var resource = this.$resource('insigniamadeira{/id}');
                 resource.remove({id: im_id}, {id: im_id}).then ( response => {
                     console.log(this);
                     console.log(response);
@@ -316,7 +291,7 @@
                 this.detailPanel = index;
             },
             im: function (linha_id, ramo_id) {
-                var resource = this.$resource('api/insigniamadeira{/id}');
+                var resource = this.$resource('insigniamadeira{/id}');
                 resource.save({id:null},{associado_id: this.selected.id, linha_formacao_id: linha_id, ramo_id: ramo_id}).then ( response => {
                         console.log(this);
                         console.log(response);
@@ -331,7 +306,7 @@
             detail: function(id) {
                 console.log(this.search);
                 
-                var resource = this.$resource('api/associados{/id}');
+                var resource = this.$resource('api/cursos{/id}');
                 resource.get({id: id}).then ( response => {
                     console.log(this);
                     console.log(response.body);
@@ -351,7 +326,7 @@
                    this.field = field;
                 }
                 console.log(this.search);
-                var resource = this.$resource('api/associados{/id}');
+                var resource = this.$resource('api/cursos{/id}');
                 resource.get({field: this.field, search: this.search, im: this.onlyIM, ramo: this.ramo, linha: this.linha, contrato: this.contrato}).then ( response => {
                     console.log(this);
                     console.log(response);

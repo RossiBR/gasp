@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\InsigniaMadeira;
 
 class Associado extends Model
 {
@@ -17,6 +16,11 @@ class Associado extends Model
 	public function contratos()
     {
         return $this->hasMany('App\ContratoVoluntario', 'associado_id');
+    }
+
+    public function formador()
+    {
+        return $this->hasMany('App\Formador', 'associado_id');
     }
     
 

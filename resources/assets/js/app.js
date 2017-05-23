@@ -25,6 +25,7 @@ window.Vue.http.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('associados', require('./components/Associados.vue'));
+Vue.component('cursos', require('./components/Cursos.vue'));
 Vue.component('ramos', require('./components/Ramos.vue'));
 Vue.component('linhasformacao', require('./components/LinhasFormacao.vue'));
 

@@ -46,7 +46,8 @@
                     @if (!Auth::guest())
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                       <li><a href="{{ route('asso') }}">Associados</a></li>
+                       <li><a href="{{ route('voluntarios') }}">Voluntários</a></li>
+                       <li><a href="{{ route('cursos') }}">Cursos</a></li>
                     </ul>
                     @endif
 
