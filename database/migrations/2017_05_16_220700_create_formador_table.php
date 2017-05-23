@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContratoVoluntarioTable extends Migration
+class CreateFormadorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -32,6 +32,10 @@ class CreateContratoVoluntarioTable extends Migration
             $table->timestamp('scf2_ano')->nullable();
             $table->timestamp('cf2_data_certificado')->nullable();
 
+            $table->timestamp('nomeacao')->nullable();
+            $table->timestamp('nomeacao_data_inicio')->nullable();
+            $table->timestamp('nomeacao_data_fim')->nullable();
+
             $table->timestamps();
 
             $table->engine = 'InnoDB';
@@ -46,6 +50,6 @@ class CreateContratoVoluntarioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contrato_voluntario');
+        Schema::dropIfExists('formador');
     }
 }

@@ -163,6 +163,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        //Maatwebsite\Laravel\ExcelLaravelExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
