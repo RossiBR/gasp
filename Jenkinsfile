@@ -7,12 +7,12 @@ node('master') {
             checkout scm
 
             // Install dependencies, create a new .env file and generate a new key, just for testing
-            cmd "php composer install"
-            "cp .env.example .env"
-            "php artisan key:generate"
+            bat "php composer install"
+            bat "copy .env.example .env"
+            bat "php artisan key:generate"
 
             // Run any static asset building, if needed
-            // sh "npm install && gulp --production"
+            bat "npm install && gulp --production"
         }
 
         stage('test') {
