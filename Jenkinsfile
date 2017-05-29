@@ -7,7 +7,7 @@ node('master') {
             checkout scm
 
             // Install dependencies, create a new .env file and generate a new key, just for testing
-            "composer install"
+            sh "php composer install"
             "cp .env.example .env"
             "php artisan key:generate"
 
