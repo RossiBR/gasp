@@ -7,9 +7,9 @@ node('master') {
             checkout scm
 
             // Install dependencies, create a new .env file and generate a new key, just for testing
-            sh "composer install"
-            sh "cp .env.example .env"
-            sh "php artisan key:generate"
+            "composer install"
+            "cp .env.example .env"
+            "php artisan key:generate"
 
             // Run any static asset building, if needed
             // sh "npm install && gulp --production"
@@ -17,13 +17,13 @@ node('master') {
 
         stage('test') {
             // Run any testing suites
-            sh "./vendor/bin/phpunit"
+            "./vendor/bin/phpunit"
         }
 
         stage('deploy') {
             // If we had ansible installed on the server, setup to run an ansible playbook
             // sh "ansible-playbook -i ./ansible/hosts ./ansible/deploy.yml"
-            sh "echo 'WE ARE DEPLOYING'"
+            echo "WE ARE DEPLOYING"
         }
     } catch(error) {
         throw error
