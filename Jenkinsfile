@@ -7,9 +7,9 @@ node('master') {
             checkout scm
 
             // Install dependencies, create a new .env file and generate a new key, just for testing
-            bat "php composer install"
+            bat "composer install"
             bat "copy .env.example .env"
-            bat "php artisan key:generate"
+            // "artisan key:generate"
 
             // Run any static asset building, if needed
             bat "npm install && gulp --production"
