@@ -18,8 +18,13 @@
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li class="active">Cursos</li>
+                            <li class="active">{{ this.model_label }}</li>
                         </ol>
+
+                        <div class="alert alert-danger alert-dismissible" role="alert" v-if="errorMessage">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          {{ errorMessage }}
+                        </div>
 
 
                         <div class="input-group">
@@ -40,7 +45,7 @@
                         <div class="list-group">
                             <button type="button" class="list-group-item" v-for="item in lastResponse.data" v-on:click="detail(item.id)">
                                 
-                                <strong>{{ item.grade.nome }}</strong>
+                                <strong>{{ item.grade ? item.grade.nome : 'Novo Curso' }}</strong>
                                 
                             </button>
                         </div> <!-- list -->
@@ -65,7 +70,7 @@
                     <div class="panel-body">
                           
                             <div>
-                                <a href="#" v-on:click="sendFile('uploadassociados')" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo</a><br/><br/>
+                                <a href="#" v-on:click="newItem()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo</a><br/><br/>
                                 <input type="file" @change="upload" /><br/>
                                 <a href="#" v-on:click="sendFile('uploadassociados')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Associados</a><br/>
                                 <a href="#" v-on:click="sendFile('uploadims')" ><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> IMS</a><br/>
@@ -81,10 +86,10 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                          <ul class="nav nav-pills nav-stacked">
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(1)">Perfil</a></li>
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(2)">Dados do Curso</a></li>
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(3)">Local</a></li>
-                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(4)">Equipe</a></li>
+                            <li role="presentation" v-if="selected.id"><a href="#" v-on:click="showDetailPanel(1)">Resumo</a></li>
+                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(2)">Dados</a></li>
+                            <li role="presentation"><a href="#" v-on:click="showDetailPanel(3)" v-if="selected.id">Equipe</a></li>
+                            <li role="presentation" v-if="selected.id"><a href="#" v-on:click="showDetailPanel(4)">Grade</a></li>
                         </ul>
                     </div>
                 </div>         
@@ -93,95 +98,51 @@
 
                     <div class="panel panel-default">
  
+                    <transition name="fade">
                     <div class="panel-body" id="perfil" v-if="detailPanel == 1" >
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="#" v-on:click="master()">Cursos</a></li>
-                            <li class="active">{{selected.grade.nome}}</li>
+                            <li><a href="#" v-on:click="master()">{{ this.model_label }}</a></li>
+                            <li class="active">{{ selected.id ? selected.grade.nome : 'Novo Curso'}}</li>
                         </ol>
                         
                         <h3>Dados do Curso</h3>
-                        <p>Numero: <strong>{{ selected.registro }}</strong></p>
+                        <p>Numero: <strong>{{ selected.id ? selected.numero : null }}</strong></p>
 
                         <h3>Dados da Grade</h3>
-                        <p>Nome: <strong>{{ selected.grade.nome }}</strong></p>
-                        <p>Tipo de Curso: <strong>{{ selected.grade.tipo_curso ? selected.grade.tipo_curso.nome : 'N/A'}}</strong></p>
-                        <p>Linha de Formação: <strong>{{ selected.grade.linha_formacao ? selected.grade.linha_formacao.nome : 'N/A' }}</strong></p>
-                        <p>Ramo: <strong>{{ selected.grade.ramo != null ? selected.grade.ramo.nome : 'N/A' }}</strong></p>
+                        <p>Nome: <strong>{{ selected.grade ? selected.grade.nome : 'Novo Curso' }}</strong></p>
+                        <p>Tipo de Curso: <strong>{{ selected.grade && selected.grade.tipo_curso != null ? selected.grade.tipo_curso.nome : 'N/A'}}</strong></p>
+                        <p>Linha de Formação: <strong>{{ selected.grade && selected.grade.linha_formacao != null ? selected.grade.linha_formacao.nome : 'N/A' }}</strong></p>
+                        <p>Ramo: <strong>{{ selected.grade && selected.grade.ramo != null ? selected.grade.ramo.nome  : 'N/A' }}</strong></p>
 
                     </div>
-
+                    </transition>
+            
                     <div class="panel-body" id="pessoais" v-if="detailPanel == 2" >
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="#" v-on:click="master()">Associados</a></li>
-                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
-                            <li class="active">Dados Pessoais</li>
-                        </ol>
-                        
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="input-registro">Registro</label>
-                                    <input type="text" class="form-control" id="input-registro" placeholder="Registro" aria-describedby="sizing-addon2" 
-                                        v-model="selected.registro">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="input-registro-digito">Digito</label>
-                                    <input type="text" class="form-control" id="input-registro-digito" placeholder="Digito" aria-describedby="sizing-addon2" 
-                                        v-model="selected.registro_digito">
-                                </div>
-                            </div>
-                        </div>
+                            <li><a href="#" v-on:click="master()">{{ this.model_label }}</a></li>
+                            <li><a href="#" v-on:click="showDetailPanel(1)">{{ selected.grade ? selected.grade.nome : 'Novo Curso'}}</a></li>
+                            <li class="active">Dados do Curso</li>
+                        </ol>                                
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="input-nome">Nome</label>
-                                    <input type="text" class="form-control" id="input-nome" placeholder="Nome" aria-describedby="sizing-addon2" 
-                                        v-model="selected.grade.nome" >
-                                </div>
-                            </div>
-                        </div>
+                        <input-select label="Grade" resource="grades" modalLabel="Grades" :select-callback="updateGrade" :current="selected.grade" />
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="input-email">Email</label>
-                                    <input type="text" class="form-control" id="input-email" placeholder="Email" aria-describedby="sizing-addon2" 
-                                        v-model="selected.email">
-                                </div>
-                            </div>
-                        </div>
+                        <input-select label="Local" resource="locais" modalLabel="Locais" :select-callback="updateLocal" :current="selected.local" />
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="input-created">Data de Criação</label>
-                                    <input type="datetime" class="form-control" id="input-created" placeholder="Email" aria-describedby="sizing-addon2" 
-                                        v-model="selected.created_at">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="input-created">Data de Criação</label>
-                                    <input type="datetime" class="form-control" id="input-created" placeholder="Email" aria-describedby="sizing-addon2" 
-                                        v-model="selected.created_at">
-                                </div>
-                            </div>
-                        </div>
+                        <input-select label="Distrito" resource="distritos" modalLabel="Distritos" :select-callback="updateDistrito" :current="selected.distrito"/>
+
+                        <input-timestamps :created-at="selected.created_at" :updated-at="selected.updated_at" />
 
                     </div>
-                    <div class="panel-body" id="pessoais" v-if="detailPanel == 3" >
+                    <div class="panel-body" id="pessoais" v-if="detailPanel == 3">
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="#" v-on:click="master()">Cursos</a></li>
-                            <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
+                            <li><a href="#" v-on:click="master()">{{ this.model_label }}</a></li>
+                            <li><a href="#" v-on:click="showDetailPanel(1)">{{selected.grade.nome}}</a></li>
                             <li class="active">Insígnias da Madeira</li>
 
                         </ol>
@@ -190,11 +151,11 @@
                         
                     </div>
 
-                    <div class="panel-body" id="pessoais" v-if="detailPanel == 4" >
+                    <div class="panel-body" id="pessoais" v-if="detailPanel == 4">
     
                         <ol class="breadcrumb">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="#" v-on:click="master()">Associados</a></li>
+                            <li><a href="#" v-on:click="master()">{{ this.model_label }}</a></li>
                             <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
                             <li class="active">Contratos</li>
                         </ol>
@@ -210,7 +171,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div>
-                                <a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Salvar</a>
+                                <a href="#" @click="save()"><span class="glyphicon glyphicon-save" aria-hidden="true" ></span> Salvar</a>
                             </div>
                             <div>
                                 <a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>
@@ -243,39 +204,84 @@
 
 <script>
     export default {
+        props: ['model_type', 'model_label'],
+
         data: function () {
-            return { items: [], search: '', lastResponse: {}, selected: {} , ims:{}, debug: '', showDetail: false, edit:false, detailPanel:1, onlyIM:0, ramo: null, linha: null, contrato: null, file: '', isUploading: false, field:'nome', uploadStatus:'' };
+            return {
+                errorMessage: null,
+                resource_url: '', 
+                items: [], 
+                
+                search: '', 
+                field:'nome',
+
+                lastResponse: {}, 
+                
+                selected: {}, 
+                
+
+                debug: '', 
+                showDetail: false, 
+                
+                edit:false, 
+                 
+                detailPanel:1,
+                file: '', 
+                isUploading: false, 
+                uploadStatus:'',
+
+                ims:{}, onlyIM:0, ramo: null, linha: null, contrato: null,  
+                result1: null,
+            };
         },
+
         created: function () {
-           this.fetch();
+            this.resource_url = 'api/' + this.model_type + '{/id}';
+            this.fetch();
+            
+            
+            
         },
+
         methods: {
+
+            formatDatetime: function(datetime) {
+              if (datetime === null) {
+                return "[null]";
+              } else {
+                return datetime.format("YYYY-MM-DD HH:mm:ss");
+              }
+            },
+            newItem: function() {
+                this.selected = {id: null, grade: null, created_at: null, updated_at: null};
+                this.showDetail=true;
+                this.showDetailPanel(2);
+            },
+            save: function() {
+                var resource = this.$resource(this.resource_url);
+                resource.save({id:null},{
+                    grade_id: this.selected.grade.id, 
+                    local_id: (this.selected.local ? this.selected.local.id : null),
+                    distrito_id: (this.selected.distrito ? this.selected.distrito.id : null),
+                }).then ( response => {
+                        console.log('saved:')
+                        console.log(this);
+                        console.log(response);
+                        this.selected = response.body;
+                        this.detail(this.selected.id);
+                }, response => {
+                        console.log(this);
+                        console.log(response);
+                        this.debug = response.body;
+                        this.errorMessage = response.body;
+                } );
+
+            },
             find: function (im, linha, ramo, contrato) {                
                 this.onlyIM=im;
                 this.linha=linha;
                 this.ramo=ramo;
                 this.contrato=contrato;
-                this.fetch(); 
-            },
-            findIMContratoValido: function () {
-                this.contrato=1;
-                this.onlyIM=0;
-                this.ramo=null;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMContratoExpirado: function () {
-                this.contrato=2;
-                this.onlyIM=0;
-                this.ramo=null;
-                this.linha=null;
-                this.fetch(); 
-            },
-            findIMSemContrato: function () {
-                this.contrato=3;
-                this.onlyIM=0;
-                this.ramo=null;
-                this.linha=null;
                 this.fetch(); 
             },
             deleteim: function (im_id) {
@@ -303,10 +309,22 @@
                         this.detail(this.selected.id);
                 } );
             },
+            updateGrade: function(grade) {
+                this.selected.grade_id = grade.id;
+                this.selected.grade = grade;
+            },
+            updateLocal: function(local) {
+                this.selected.local_id = local.id;
+                this.selected.local = local;
+            },
+            updateDistrito: function(distrito) {
+                this.selected.distrito_id = distrito.id;
+                this.selected.distrito = distrito;
+            },
             detail: function(id) {
                 console.log(this.search);
                 
-                var resource = this.$resource('api/cursos{/id}');
+                var resource = this.$resource(this.resource_url);
                 resource.get({id: id}).then ( response => {
                     console.log(this);
                     console.log(response.body);
@@ -326,7 +344,7 @@
                    this.field = field;
                 }
                 console.log(this.search);
-                var resource = this.$resource('api/cursos{/id}');
+                var resource = this.$resource(this.resource_url);
                 resource.get({field: this.field, search: this.search, im: this.onlyIM, ramo: this.ramo, linha: this.linha, contrato: this.contrato}).then ( response => {
                     console.log(this);
                     console.log(response);
@@ -381,8 +399,9 @@
             
 
         },
-        mounted: function () {
+        mounted: function () {            
+        
             console.log('Component mounted.');
-        }
+        },        
     }
 </script>

@@ -324,8 +324,6 @@ Route::post('/uploadformadores', function (Request $request) {
     }
 });
 
-
-
 Route::group([	
 	'middleware' => 'auth',
 	'prefix' => 'api',
@@ -337,6 +335,9 @@ Route::group([
 		Route::resource('insigniamadeira', 'InsigniaMadeiraController');
 		Route::resource('uel', 'UELController');
 		Route::resource('cursos', 'CursoApiController');
+		Route::resource('grades', 'GradeApiController');
+		Route::resource('locais', 'LocalApiController');
+		Route::resource('distritos', 'DistritoApiController');
 	}
 );
 

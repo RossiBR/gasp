@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UEL extends Model
+class Distrito extends Model
 {
-    protected $table = 'uel';
+    protected $table = 'distrito';
 }

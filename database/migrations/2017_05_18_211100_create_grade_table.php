@@ -20,6 +20,8 @@ class CreateGradeTable extends Migration
 
             $table->string('sigla');
 
+            $table->string('qualificacao_diretor')->nullable();
+
             $table->integer('versao')->unsigned();
 
             $table->integer('tipo_curso_id')->unsigned()->nullable();

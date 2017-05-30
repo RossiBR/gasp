@@ -10,7 +10,12 @@ window._ = require('lodash');
 try {
     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap-sass');
+    require('bootstrap-sass');  
+    require('moment');
+    require('moment/locale/pt-br');    
+    require('moment-timezone');
+    require('eonasdan-bootstrap-datetimepicker');
+
 } catch (e) {}
 
 /**

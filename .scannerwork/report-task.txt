@@ -1,0 +1,5 @@
+projectKey=gasp
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/gasp
+ceTaskId=AVxUcnVcTU4Ha_yMhO_e
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVxUcnVcTU4Ha_yMhO_e

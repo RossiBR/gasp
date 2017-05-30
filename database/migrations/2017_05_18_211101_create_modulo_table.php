@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUelTable extends Migration
+class CreateModuloTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,18 @@ class CreateUelTable extends Migration
      */
     public function up()
     {
-        Schema::create('uel', function (Blueprint $table) {
+        Schema::create('modulo', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('regiao');
-            $table->integer('numeral')->unique();
+            $table->string('nome');
 
-            $table->string('nome')->unique();
-            
-            $table->string('sigla')->nullable();
-                   
-            $table->timestamp('data_fundacao')->nullable();
+            $table->string('sigla');
 
-            $table->boolean('ativo')->nullable();
+            $table->boolean('didatico')->notnull();
+
+            $table->string('carga_horaria_min');
+
+            $table->integer('versao')->unsigned();
             
             $table->timestamps();
 
@@ -41,6 +40,6 @@ class CreateUelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uel');
+        Schema::dropIfExists('modulo');
     }
 }

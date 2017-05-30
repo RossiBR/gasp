@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Curso;
+use App\Grade;
+use App\InsigniaMadeira;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class CursoApiController extends Controller
+class GradeApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,16 +18,16 @@ class CursoApiController extends Controller
     {
         
 
-        $query = Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso', 'local', 'distrito');
+        $query = Grade::with('ramo', 'linha_formacao', 'tipo_curso');
               
   //      $query = $query->orderBy('nome');        
 
         $list = $query->paginate();
 
 
-        foreach ($list as $curso) {            
-            $this->authorize('view', $curso);            
-            //$curso->ims->sortBy('ramo.id');
+        foreach ($list as $grade) {            
+            $this->authorize('view', $grade);
+            //$grade->ims->sortBy('ramo.id');
         }
 
         return $list;
@@ -40,7 +40,7 @@ class CursoApiController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Curso::class);
+        $this->authorize('create', Grade::class);
     }
 
     /**
@@ -51,42 +51,30 @@ class CursoApiController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Curso::class);
-
-        $curso = new Curso;
-        $curso->grade_id = $request->grade_id;
-        $curso->local_id = $request->local_id;
-        $curso->distrito_id = $request->distrito_id;
-        $curso->criador_id = Auth::user()->id;
-        
-        $curso->save();
-
-        return $curso;
-
-
+        $this->authorize('create', Grade::class);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Curso  $curso
+     * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function show(Curso $curso)
+    public function show(Grade $grade)
     {
-        $this->authorize('view', $curso);
-        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);
+        $this->authorize('view', $grade);
+        return Grade::with('ramo', 'linha_formacao', 'tipo_curso')->find($grade->id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Curso  $curso
+     * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function edit(Curso $curso)
+    public function edit(Grade $grade)
     {
-        $this->authorize('update', $curso);
+        $this->authorize('update', $grade);
         //
     }
 
@@ -94,22 +82,22 @@ class CursoApiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Curso  $curso
+     * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Curso $curso)
+    public function update(Request $request, Grade $grade)
     {
-        $this->authorize('update', $curso);
+        $this->authorize('update', $grade);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Curso  $curso
+     * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Curso $curso)
+    public function destroy(Grade $grade)
     {
-        $this->authorize('delete', $curso);
+        $this->authorize('delete', $grade);
     }
 }

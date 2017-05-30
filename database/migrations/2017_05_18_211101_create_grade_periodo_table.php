@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUelTable extends Migration
+class CreateGradePeriodoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,11 @@ class CreateUelTable extends Migration
      */
     public function up()
     {
-        Schema::create('uel', function (Blueprint $table) {
+        Schema::create('grade_periodo', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('regiao');
-            $table->integer('numeral')->unique();
-
-            $table->string('nome')->unique();
-            
-            $table->string('sigla')->nullable();
-                   
-            $table->timestamp('data_fundacao')->nullable();
-
-            $table->boolean('ativo')->nullable();
+            $table->integer('grade_id')->unsigned()->nullable();
+            $table->foreign('grade_id')->references('id')->on('grade');
             
             $table->timestamps();
 
@@ -41,6 +33,6 @@ class CreateUelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uel');
+        Schema::dropIfExists('grade_periodo');
     }
 }

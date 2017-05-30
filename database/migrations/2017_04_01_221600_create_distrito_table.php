@@ -17,13 +17,15 @@ class CreateDistritoTable extends Migration
             $table->increments('id');
 
             $table->string('regiao');
-            $table->integer('numeral')->unique();
+            $table->integer('numeral')->unique()->nullable();
 
             $table->string('nome')->unique();
             
             $table->string('sigla')->nullable();
                    
             $table->timestamp('data_fundacao')->nullable();
+
+            $table->boolean('ativo')->nullable();
 
             $table->timestamps();
 

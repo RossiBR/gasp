@@ -13,6 +13,16 @@ class Curso extends Model
         return $this->belongsTo('App\Grade');
     }
 
+    public function local()
+    {
+        return $this->belongsTo('App\Local');
+    }
+
+ 	public function distrito()
+    {
+        return $this->belongsTo('App\Distrito');
+    }
+    
     public function criador()
     {
         return $this->belongsTo('App\Users');

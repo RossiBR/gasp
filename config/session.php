@@ -122,7 +122,7 @@ return [
     |
     */
 
-    'cookie' => 'laravelsession',
+    'cookie' => 'gaspsession',
 
     /*
     |--------------------------------------------------------------------------
@@ -148,7 +148,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', 'localhost'),
+    'domain' => env('SESSION_DOMAIN', 'gasp'),
 
     /*
     |--------------------------------------------------------------------------

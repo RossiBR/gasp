@@ -16,10 +16,19 @@ class CreateCursoTable extends Migration
         Schema::create('curso', function (Blueprint $table) {
             $table->increments('id');
             
+            //foreing keys
             $table->integer('grade_id')->unsigned()->nullable();
             $table->foreign('grade_id')->references('id')->on('grade');
             
-            //foreing keys
+            $table->integer('local_id')->unsigned()->nullable();
+            $table->foreign('local_id')->references('id')->on('local');
+
+            $table->integer('distrito_id')->unsigned()->nullable();
+            $table->foreign('distrito_id')->references('id')->on('distrito');
+
+            $table->integer('diretor_associado_id')->unsigned()->nullable();
+            $table->foreign('diretor_associado_id')->references('id')->on('associado');
+
             $table->integer('criador_id')->unsigned();
             $table->foreign('criador_id')->references('id')->on('users');     
 
