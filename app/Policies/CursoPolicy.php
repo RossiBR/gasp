@@ -66,5 +66,7 @@ class CursoPolicy
         }
         return false;
     }
+
+    
 }
 //

@@ -61,7 +61,7 @@ class CursoApiController extends Controller
         
         $curso->save();
 
-        return $curso;
+        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);;
 
 
     }
@@ -100,6 +100,17 @@ class CursoApiController extends Controller
     public function update(Request $request, Curso $curso)
     {
         $this->authorize('update', $curso);
+
+        $curso = Curso::find($curso->id);
+        //$curso->grade_id = $request->grade_id;
+        $curso->local_id = $request->local_id;
+        //$curso->distrito_id = $request->distrito_id;
+        //$curso->criador_id = Auth::user()->id;
+        
+        $curso->save();
+
+        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);
+
     }
 
     /**

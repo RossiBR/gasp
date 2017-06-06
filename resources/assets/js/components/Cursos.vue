@@ -259,23 +259,41 @@
             },
             save: function() {
                 var resource = this.$resource(this.resource_url);
-                resource.save({id:null},{
-                    grade_id: this.selected.grade.id, 
-                    local_id: (this.selected.local ? this.selected.local.id : null),
-                    distrito_id: (this.selected.distrito ? this.selected.distrito.id : null),
-                }).then ( response => {
-                        console.log('saved:')
-                        console.log(this);
-                        console.log(response);
-                        this.selected = response.body;
-                        this.detail(this.selected.id);
-                }, response => {
-                        console.log(this);
-                        console.log(response);
-                        this.debug = response.body;
-                        this.errorMessage = response.body;
-                } );
-
+                if (this.selected.id) {
+                    resource.update({id:this.selected.id},{
+                        grade_id: this.selected.grade.id, 
+                        local_id: (this.selected.local ? this.selected.local.id : null),
+                        distrito_id: (this.selected.distrito ? this.selected.distrito.id : null),
+                    }).then ( response => {
+                            console.log('saved:')
+                            console.log(this);
+                            console.log(response);
+                            this.selected = response.body;
+                            this.detail(this.selected.id);
+                    }, response => {
+                            console.log(this);
+                            console.log(response);
+                            this.debug = response.body;
+                            this.errorMessage = response.body;
+                    } );
+                } else {
+                    resource.save({id:null},{
+                        grade_id: this.selected.grade.id, 
+                        local_id: (this.selected.local ? this.selected.local.id : null),
+                        distrito_id: (this.selected.distrito ? this.selected.distrito.id : null),
+                    }).then ( response => {
+                            console.log('saved:')
+                            console.log(this);
+                            console.log(response);
+                            this.selected = response.body;
+                            this.detail(this.selected.id);
+                    }, response => {
+                            console.log(this);
+                            console.log(response);
+                            this.debug = response.body;
+                            this.errorMessage = response.body;
+                    } );
+                }
             },
             find: function (im, linha, ramo, contrato) {                
                 this.onlyIM=im;
