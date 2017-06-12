@@ -23,4 +23,9 @@ class Grade extends Model
         return $this->belongsTo('App\TipoCurso');
     }
 
+    public function modulos()
+    {
+        return $this->hasMany('App\GradeModulo', 'grade_id');
+    }
+
 }

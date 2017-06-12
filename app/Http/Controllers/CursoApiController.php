@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use DateTime;
+use DateInterval;
 use App\Curso;
+use App\CursoModulo;
+use App\CursoPeriodo;
+use App\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -18,7 +23,7 @@ class CursoApiController extends Controller
     {
         
 
-        $query = Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso', 'local', 'distrito');
+        $query = Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso', 'local', 'distrito', 'equipe.associado', 'modulos');
               
   //      $query = $query->orderBy('nome');        
 
@@ -57,11 +62,33 @@ class CursoApiController extends Controller
         $curso->grade_id = $request->grade_id;
         $curso->local_id = $request->local_id;
         $curso->distrito_id = $request->distrito_id;
-        $curso->criador_id = Auth::user()->id;
+        $curso->criador_id = Auth::user()->id;               
         
         $curso->save();
 
-        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);;
+
+        $grade = Grade::with('modulos.modulo')->find($curso->grade_id);
+        if ($grade->modulos) {
+            $ultimoPeriodo = 0;
+            $cursoPeriodo = 0;
+            foreach ($grade->modulos as $gm) {
+                if ($ultimoPeriodo < $gm->periodo) {
+                    $cursoPeriodo = new CursoPeriodo;
+                    $cursoPeriodo->curso_id = $curso->id;
+                    $cursoPeriodo->save();
+                    $ultimoPeriodo = $gm->periodo;
+                }
+                $cursoModulo = new CursoModulo;
+                $cursoModulo->curso_id = $curso->id;
+                $cursoModulo->curso_periodo_id = $cursoPeriodo->id;
+                $cursoModulo->ordem = $gm->ordem;
+                $cursoModulo->modulo_id = $gm->modulo_id;
+                $cursoModulo->carga_horaria_min = $gm->modulo->carga_horaria_min;
+                $cursoModulo->save();      
+            }
+        }
+
+        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);
 
 
     }
@@ -75,7 +102,9 @@ class CursoApiController extends Controller
     public function show(Curso $curso)
     {
         $this->authorize('view', $curso);
-        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);
+        $curso = Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito', 'modulos.modulo', 'diretor')->find($curso->id);
+
+        return $curso;
     }
 
     /**
@@ -104,12 +133,13 @@ class CursoApiController extends Controller
         $curso = Curso::find($curso->id);
         //$curso->grade_id = $request->grade_id;
         $curso->local_id = $request->local_id;
+        $curso->diretor_associado_id = $request->diretor_associado_id;
         //$curso->distrito_id = $request->distrito_id;
         //$curso->criador_id = Auth::user()->id;
         
         $curso->save();
 
-        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito')->find($curso->id);
+        return Curso::with('grade.ramo', 'grade.linha_formacao', 'grade.tipo_curso','local', 'distrito', 'diretor')->find($curso->id);
 
     }
 
@@ -123,4 +153,6 @@ class CursoApiController extends Controller
     {
         $this->authorize('delete', $curso);
     }
+
+    
 }

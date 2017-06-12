@@ -338,6 +338,12 @@ Route::group([
 		Route::resource('grades', 'GradeApiController');
 		Route::resource('locais', 'LocalApiController');
 		Route::resource('distritos', 'DistritoApiController');
+		Route::resource('cursomodulos', 'CursoModuloApiController');
+		Route::resource('cursoequipe', 'CursoEquipeApiController');
+		Route::resource('cursoperiodos', 'CursoPeriodoApiController');
+
+		Route::put('cursomodulos/{cursoModulo}/up', 'CursoModuloApiController@up');
+		Route::put('cursomodulos/{cursoModulo}/down', 'CursoModuloApiController@down');
 	}
 );
 

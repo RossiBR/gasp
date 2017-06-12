@@ -9,10 +9,13 @@
                         <span class="glyphicon glyphicon-search"></span>
                     </span>                    
                     <input type="text" class="form-control" id="input-nome" placeholder="Nome" aria-describedby="sizing-addon2" 
-                        v-model="selected.nome" readonly="readonly">                        
+                        v-model="selected.nome" readonly="readonly">
+                    <span class="input-group-addon" @click="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </span>                      
                 </div>
             </div>
-        </div>
+        </div>        
         <div class="modal fade" :id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -38,7 +41,7 @@
 
 <script>
     export default {
-        props: ['label', 'resource', 'modalLabel', 'selectCallback', 'current'],
+        props: ['label', 'resource', 'modalLabel', 'selectCallback', 'addCallback', 'current'],
         data: function () {
             return { inputId:'', modalId:'', modalSelector: '', resourceUrl: '', items: [], search: '', lastResponse: {data:null}, selected: {id:null, nome:null} };
         },
@@ -69,8 +72,18 @@
                 this.selected = item;
                 console.log('selected:');
                 console.log(this.selected);
-                this.selectCallback(this.selected);
+                if (this.selectCallback) { 
+                    this.selectCallback(this.selected);
+                }
             },
+            add: function() {                                            
+                console.log('add:');
+                console.log(this.selected);
+                if(this.selected && this.addCallback) {
+                    this.addCallback(this.selected);
+                    this.selected = {id:null, nome: null};                                
+                }
+            }
         },
         mounted: function () {
             console.log('Grade Component mounted.');

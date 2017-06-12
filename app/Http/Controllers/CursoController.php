@@ -25,4 +25,6 @@ class CursoController extends Controller
     {
         return view('cursos');
     }
+
+    
 }

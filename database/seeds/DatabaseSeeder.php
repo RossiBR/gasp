@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
         $this->call('ModuloTableSeeder');
         $this->command->info('Modulo table seeded!');
 
+        $this->call('GradeModuloTableSeeder');
+        $this->command->info('GradeModulo table seeded!');
+
         $this->call('DistritoTableSeeder');
         $this->command->info('Distrito table seeded!');
 
@@ -53,6 +56,8 @@ class DatabaseSeeder extends Seeder
         DB::table('associado')->delete();
         factory(Associado::class, 100)->create();
         $this->command->info('Associado table seeded!');
+
+
 
         DB::table('uel')->delete();
         factory(UEL::class, 100)->create();
@@ -205,6 +210,42 @@ class ModuloTableSeeder extends Seeder {
             'carga_horaria_min' => 120,
             'versao' => 1,
         ]);
+
+        // 10
+        Modulo::create([
+            'nome' => 'Modulo E',
+            'sigla' => 'MA',
+            'didatico' => true,
+            'carga_horaria_min' => 120,
+            'versao' => 1,
+        ]);
+
+        // 11
+        Modulo::create([
+            'nome' => 'Modulo F',
+            'sigla' => 'MB',
+            'didatico' => true,
+            'carga_horaria_min' => 120,
+            'versao' => 1,
+        ]);
+
+        // 12
+        Modulo::create([
+            'nome' => 'Modulo G',
+            'sigla' => 'MC',
+            'didatico' => true,
+            'carga_horaria_min' => 120,
+            'versao' => 1,
+        ]);
+
+        // 13
+        Modulo::create([
+            'nome' => 'Modulo H',
+            'sigla' => 'MD',
+            'didatico' => true,
+            'carga_horaria_min' => 120,
+            'versao' => 1,
+        ]);
        
     }
 
@@ -259,23 +300,34 @@ class DistritoTableSeeder extends Seeder {
 
 }
 
-
 class GradeModuloTableSeeder extends Seeder {
 
     public function run()
     {
         DB::table('grade_modulo')->delete();
 
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 1, 'ordem' => 1]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 4, 'ordem' => 2]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 6, 'ordem' => 3]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 2, 'ordem' => 4]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 7, 'ordem' => 5]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 3, 'ordem' => 6]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 8, 'ordem' => 7]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 2, 'ordem' => 8]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 9, 'ordem' => 9]);
-        GradeModulo::create(['grade_id' => 1,'modulo_id' => 5, 'ordem' => 10]);       
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 1, 'periodo' => 1, 'ordem' => 1]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 4, 'periodo' => 1, 'ordem' => 2]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 6, 'periodo' => 1, 'ordem' => 3]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 2, 'periodo' => 1, 'ordem' => 4]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 7, 'periodo' => 1, 'ordem' => 5]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 3, 'periodo' => 1, 'ordem' => 6]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 8, 'periodo' => 1, 'ordem' => 7]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 2, 'periodo' => 1, 'ordem' => 8]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 9, 'periodo' => 1, 'ordem' => 9]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 5, 'periodo' => 1, 'ordem' => 10]);
+
+
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 1,  'periodo' => 2, 'ordem' => 1]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 4,  'periodo' => 2, 'ordem' => 2]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 10, 'periodo' => 2, 'ordem' => 3]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 2,  'periodo' => 2, 'ordem' => 4]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 11, 'periodo' => 2, 'ordem' => 5]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 3,  'periodo' => 2, 'ordem' => 6]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 12, 'periodo' => 2, 'ordem' => 7]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 2,  'periodo' => 2, 'ordem' => 8]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 13, 'periodo' => 2, 'ordem' => 9]);
+        GradeModulo::create(['grade_id' => 1,'modulo_id' => 5,  'periodo' => 2, 'ordem' => 10]);       
     }
 
 }

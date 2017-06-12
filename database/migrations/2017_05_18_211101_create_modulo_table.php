@@ -22,7 +22,7 @@ class CreateModuloTable extends Migration
 
             $table->boolean('didatico')->notnull();
 
-            $table->string('carga_horaria_min');
+            $table->integer('carga_horaria_min');
 
             $table->integer('versao')->unsigned();
             

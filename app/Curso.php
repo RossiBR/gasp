@@ -23,9 +23,24 @@ class Curso extends Model
         return $this->belongsTo('App\Distrito');
     }
     
+    public function equipe()
+    {
+        return $this->hasMany('App\CursoEquipe', 'curso_id');
+    }
+
+    public function diretor()
+    {
+        return $this->belongsTo('App\Associado', 'diretor_associado_id');
+    }
+
     public function criador()
     {
         return $this->belongsTo('App\Users');
+    }
+
+    public function modulos()
+    {
+        return $this->hasMany('App\CursoModulo', 'curso_id');
     }
 
 }

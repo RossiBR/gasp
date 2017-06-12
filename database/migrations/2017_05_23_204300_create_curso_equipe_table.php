@@ -23,7 +23,11 @@ class CreateCursoEquipeTable extends Migration
             $table->integer('associado_id')->unsigned();
             $table->foreign('associado_id')->references('id')->on('associado');
 
+            
+
             $table->timestamps();
+
+            $table->unique(['curso_id', 'associado_id']);
 
             $table->engine = 'InnoDB';
 

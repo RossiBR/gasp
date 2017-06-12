@@ -128,11 +128,13 @@
                             <li class="active">Dados do Curso</li>
                         </ol>                                
 
+                        <input-select label="Distrito" resource="distritos" modalLabel="Distritos" :select-callback="updateDistrito" :current="selected.distrito"/>
+
                         <input-select label="Grade" resource="grades" modalLabel="Grades" :select-callback="updateGrade" :current="selected.grade" />
 
-                        <input-select label="Local" resource="locais" modalLabel="Locais" :select-callback="updateLocal" :current="selected.local" />
+                        <input-select label="Local" resource="locais" modalLabel="Locais" :select-callback="updateLocal" :current="selected.local" />                       
 
-                        <input-select label="Distrito" resource="distritos" modalLabel="Distritos" :select-callback="updateDistrito" :current="selected.distrito"/>
+                        <input-select label="Diretor" resource="associados" modalLabel="Diretores" :select-callback="updateDiretor" :current="selected.diretor"/>
 
                         <input-timestamps :created-at="selected.created_at" :updated-at="selected.updated_at" />
 
@@ -143,11 +145,21 @@
                             <li><a href="/home">Home</a></li>
                             <li><a href="#" v-on:click="master()">{{ this.model_label }}</a></li>
                             <li><a href="#" v-on:click="showDetailPanel(1)">{{selected.grade.nome}}</a></li>
-                            <li class="active">Insígnias da Madeira</li>
-
-                        </ol>
-                        
+                            <li class="active">Equipe</li>
+                        </ol>                                            
                        
+                       <input-select-add label="Membro da Equipe" resource="associados" modalLabel="Formadores" :add-callback="addFormador"/>
+
+                        <div class="list-group">
+                            
+                            <button type="button" class="list-group-item" v-for="membro in equipe">
+                               <span><strong>{{ membro.associado.nome }}</strong></span>
+                               <span class="pull-right glyphicon glyphicon-remove" @click="removeMembro(membro)">
+                                </span>
+                            </button>
+                            
+                        </div> <!-- list -->
+
                         
                     </div>
 
@@ -157,10 +169,27 @@
                             <li><a href="/home">Home</a></li>
                             <li><a href="#" v-on:click="master()">{{ this.model_label }}</a></li>
                             <li><a href="#" v-on:click="detailPanel(1)">{{selected.grade.nome}}</a></li>
-                            <li class="active">Contratos</li>
+                            <li class="active">Grade</li>
                         </ol>
                    
+                        <div v-for="periodo in selected.periodos">
 
+                        <div>{{ periodo.id }}</div>
+                        
+                        <div class="list-group">
+                                <button type="button" class="list-group-item" v-for="cm in periodo.modulos">
+                                    <span class="glyphicon glyphicon-triangle-top" @click="moduleUp(cm)"></span>
+                                     {{ cm.horario_inicio }}
+                                    <span v-if="cm.modulo.didatico"><strong>{{ cm.modulo.nome }}</strong></span>
+                                    <span v-else="cm.modulo.didatico">{{ cm.modulo.nome }}</span> 
+                                    <span class="pull-right">{{ cm.carga_horaria_min }} min.
+                                    </span>
+                                    <br/>
+                                    <span class="glyphicon glyphicon-triangle-bottom" @click="moduleDown(cm)"></span> <small>{{ cm.horario_fim }}</small>
+                                </button>                            
+                        </div> <!-- list -->
+
+                        </div>
                     </div>
 
 
@@ -208,10 +237,11 @@
 
         data: function () {
             return {
+                nop: true,
                 errorMessage: null,
                 resource_url: '', 
                 items: [], 
-                
+                equipe: [],
                 search: '', 
                 field:'nome',
 
@@ -232,19 +262,78 @@
 
                 ims:{}, onlyIM:0, ramo: null, linha: null, contrato: null,  
                 result1: null,
+
             };
         },
 
         created: function () {
             this.resource_url = 'api/' + this.model_type + '{/id}';
-            this.fetch();
-            
-            
-            
+            this.fetch();            
         },
-
         methods: {
-
+            moduleUp: function (cursoModulo) {
+                
+                    var resource = this.$resource('api/cursomodulos/{id}/up');
+                    console.log(cursoModulo);
+                    resource.update({ id: cursoModulo.id },{}).then ( response => {
+                        this.fetchGrade();
+                    }, response => {
+                            console.log(this);
+                            console.log(response);
+                            this.debug = response.body;
+                            this.errorMessage = response.body;
+                    } );                
+                
+            },
+            moduleDown: function(cursoModulo) {
+                var currentPosition = cursoModulo.ordem;
+                if (currentPosition >= this.selected.modulos.length) {
+                    console.log('nop down');
+                    return;
+                }
+                var resource = this.$resource('api/cursomodulos/{id}/down');
+                console.log(cursoModulo);
+                resource.update({ id: cursoModulo.id },{}).then ( response => {
+                    this.fetchGrade();
+                }, response => {
+                        console.log(this);
+                        console.log(response);
+                        this.debug = response.body;
+                        this.errorMessage = response.body;
+                } );      
+            },
+            updateDiretor: function(formador) {
+                this.selected.diretor_associado_id = formador.id;
+                this.selected.diretor = formador;
+            },
+            addFormador: function(formador) {
+               var resource = this.$resource('api/cursoequipe{/id}');
+                resource.save({id:null},{
+                    curso_id: this.selected.id, 
+                    associado_id: formador.id
+                }).then ( response => {
+                        console.log(this);
+                        console.log(response);
+                        this.fetchEquipe();
+                }, response => {
+                        console.log(this);
+                        console.log(response);
+                        this.debug = response.body;                        
+                } );
+            },
+            removeMembro: function(formador) {
+               var resource = this.$resource('api/cursoequipe{/id}');
+                resource.remove({id:formador.id},{}).then ( response => {
+                        console.log(this);
+                        console.log(response);
+                        this.fetchEquipe();
+                }, response => {
+                        console.log(this);
+                        console.log(response);
+                        this.debug = response.body;
+                        this.fetchEquipe();
+                } );
+            },
             formatDatetime: function(datetime) {
               if (datetime === null) {
                 return "[null]";
@@ -264,6 +353,7 @@
                         grade_id: this.selected.grade.id, 
                         local_id: (this.selected.local ? this.selected.local.id : null),
                         distrito_id: (this.selected.distrito ? this.selected.distrito.id : null),
+                        diretor_associado_id: (this.selected.diretor_associado_id ? this.selected.diretor_associado_id : null),
                     }).then ( response => {
                             console.log('saved:')
                             console.log(this);
@@ -281,6 +371,7 @@
                         grade_id: this.selected.grade.id, 
                         local_id: (this.selected.local ? this.selected.local.id : null),
                         distrito_id: (this.selected.distrito ? this.selected.distrito.id : null),
+                        diretor_associado_id: (this.selected.diretor_associado_id ? this.selected.diretor_associado_id : null),
                     }).then ( response => {
                             console.log('saved:')
                             console.log(this);
@@ -350,8 +441,10 @@
                     this.selected = response.body;
                     console.log('selected:');
                     console.log(this.selected);
+                    this.fetchEquipe();
+                    this.fetchGrade();
                 } );
-                this.showDetail = true;
+                this.showDetail = true;                
             },
             master: function() {
                 this.fetch();
@@ -367,6 +460,24 @@
                     console.log(this);
                     console.log(response);
                     this.lastResponse = response.body;
+                } );
+            },
+            fetchGrade: function(field) {              
+                var resource = this.$resource('api/cursoperiodos');
+                resource.get({curso_id:this.selected.id}).then ( response => {
+                    console.log(this);
+                    console.log(response);
+                    this.selected.periodos = response.body;
+                } );
+            },
+            fetchEquipe: function() {              
+                var resource = this.$resource('api/cursoequipe{/id}');
+                resource.get({curso_id:this.selected.id}).then ( response => {
+                    console.log(this);
+                    console.log(response);
+                    console.log(response.body);
+                    this.equipe = response.body;
+                    console.log (this.equipe);
                 } );
             },
             next: function() {

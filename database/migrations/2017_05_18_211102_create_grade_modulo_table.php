@@ -21,6 +21,11 @@ class CreateGradeModuloTable extends Migration
             $table->integer('grade_id')->unsigned()->nullable();
             $table->foreign('grade_id')->references('id')->on('grade');
 
+            $table->integer('periodo')->unsigned();
+
+            $table->integer('grade_periodo_id')->unsigned()->nullable();
+            $table->foreign('grade_periodo_id')->references('id')->on('grade_periodo');
+
             $table->integer('modulo_id')->unsigned()->nullable();
             $table->foreign('modulo_id')->references('id')->on('modulo');
            

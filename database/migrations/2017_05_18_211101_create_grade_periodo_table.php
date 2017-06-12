@@ -18,7 +18,11 @@ class CreateGradePeriodoTable extends Migration
 
             $table->integer('grade_id')->unsigned()->nullable();
             $table->foreign('grade_id')->references('id')->on('grade');
-            
+
+            $table->integer('ordem')->unsigned();                                    
+            $table->timestamp('hora_inicio')->nullable();
+            $table->timestamp('hora_fim')->nullable();   
+
             $table->timestamps();
 
             $table->engine = 'InnoDB';

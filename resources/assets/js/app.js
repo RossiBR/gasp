@@ -27,6 +27,7 @@ Vue.component('associados', require('./components/Associados.vue'));
 Vue.component('cursos', require('./components/Cursos.vue'));
 Vue.component('ramos', require('./components/Ramos.vue'));
 Vue.component('input-select', require('./components/InputSelect.vue'));
+Vue.component('input-select-add', require('./components/InputSelectAdd.vue'));
 Vue.component('input-timestamps', require('./components/inputTimestamps.vue'));
 Vue.component('input-datetime', require('./components/InputDatetime.vue'));
 Vue.component('linhasformacao', require('./components/LinhasFormacao.vue'));
